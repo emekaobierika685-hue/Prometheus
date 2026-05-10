@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process"
 
 const projectRoot = resolve(import.meta.dirname, "..")
 const docsSource = resolve(projectRoot, "doc")
-const docsOutput = resolve(projectRoot, "web/public/docs")
+const docsOutput = resolve(projectRoot, "docs/public/docs")
 
 if (!existsSync(docsSource)) {
   console.error(`Docs source directory not found: ${docsSource}`)
