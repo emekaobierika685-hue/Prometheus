@@ -1,7 +1,14 @@
--- deobf_cli.lua
--- Usage: lua deobf_cli.lua input.lua output.lua
+-- This Script is Part of the Prometheus Obfuscator by levno-710
+--
+-- src/deobf_cli.lua
+--
+-- This Script contains the Logic for the Prometheus Deobfuscator CLI
 
-package.path = "./?.lua;./?/init.lua;" .. package.path
+local function script_path()
+    local str = debug.getinfo(2, "S").source:sub(2)
+    return str:match("(.*[/%\\])") or ""
+end
+package.path = script_path() .. "?.lua;" .. script_path() .. "?/init.lua;" .. package.path
 
 local deobf = require("prometheus.deobf")
 
@@ -13,7 +20,6 @@ if not inputFile then
     os.exit(1)
 end
 
--- Read input file
 local f = io.open(inputFile, "r")
 if not f then
     print("Error: cannot open '" .. inputFile .. "'")
@@ -22,15 +28,12 @@ end
 local source = f:read("*a")
 f:close()
 
--- Run deobfuscator
 local result, err = deobf:run(source, { verbose = true })
-
 if not result then
     print("Deobfuscation failed: " .. tostring(err))
     os.exit(1)
 end
 
--- Write or print output
 if outputFile then
     local out = io.open(outputFile, "w")
     if not out then
